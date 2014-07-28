@@ -47,13 +47,28 @@ int main(int argc, char** argv)
   gunrock_topk(&td_graph, top_nodes, node_ids, centrality_values);
 
   // print results for check correctness
-  int i;
-  for (i = 0; i < top_nodes; ++i)
-  {
-    printf("Node ID [%d] : CV [%d] \n", node_ids[i], centrality_values[i]);
-  }
-  printf("\n");
+  /* int i; */
+  /* for (i = 0; i < top_nodes; ++i) */
+  /* { */
+  /*   printf("Node ID [%d] : CV [%d] \n", node_ids[i], centrality_values[i]); */
+  /* } */
+  /* printf("\n"); */
 
+
+
+  td_val_t out_py;
+  td_env_t *py = td_env_python(TD_DIR, TD_PYTHON_EXE);
+
+  td_array_t td_nodes = { .data=node_ids, .length=top_nodes, .eltype=TD_INT32, .ndims=1 };
+  td_val_t arg_py = { .tag = TD_ARRAY, .object = &td_nodes };
+  td_val_t arg_py_1 = { .tag = TD_INT32, .int32_val = 2 };
+
+  py->invoke1(&out_py, "bokeh_wrap.visualize", &arg_py_1);
+  printf("bokeh_wrap.visualize(2) = %d\n", td_int32(&out_py));
+    
+  py->invoke1(&out_py, "bokeh_wrap.visualize", &arg_py);
+  printf("bokeh_wrap(nodes_ids) = %d\n", td_int32(&out_py));
+  
   if (centrality_values) free(centrality_values);
   if (node_ids)          free(node_ids);
   
