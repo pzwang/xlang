@@ -10,7 +10,7 @@ GUNROCK_LIBDIR=$(GUNROCK_DIR)/build/lib/
 GUNROCK_LDFLAGS = -L$(GUNROCK_LIBDIR) -Wl,-rpath -Wl,$(GUNROCK_LIBDIR) -lgunrock
 
 CC := /opt/local/bin/clang-mp-3.5
-CFLAGS := $(TD_CFLAGS) -I$(GUNROCK_INC)
+CFLAGS := $(TD_CFLAGS) -I$(GUNROCK_INC) -g -O0
 LDFLAGS=$(GUNROCK_LDFLAGS)
 
 
